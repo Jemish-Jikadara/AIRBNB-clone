@@ -1,10 +1,11 @@
 <header
   class="bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
-  <nav class="container mx-auto flex justify-between items-center px-6 py-4">
+  <nav
+    class="container mx-auto flex justify-between items-center px-4 sm:px-6 py-4">
     <!-- Logo -->
     <a href="/" class="flex items-center space-x-2 group">
       <div
-        class="w-10 h-10 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition duration-300">
+        class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition duration-300">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white"
           fill="none" viewBox="0 0 24 24" stroke="currentColor"
           stroke-width="2">
@@ -12,39 +13,40 @@
             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
         </svg>
       </div>
-      <span class="text-2xl font-bold text-white tracking-tight">airbnb</span>
+      <span
+        class="text-xl sm:text-2xl font-bold text-white tracking-tight">airbnb</span>
     </a>
 
     <!-- Navigation Links -->
     <ul class="flex items-center space-x-2">
       <li>
         <a href="/"
-          class="<%= currentPage === 'index' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-4 rounded-xl transition-all duration-300 font-medium">Home</a>
+          class="<%= currentPage === 'index' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 font-medium">Home</a>
       </li>
       <% if (isLoggedIn) { %>
 
       <% if (user && user.userType === 'guest') { %>
       <li>
         <a href="/homes"
-          class="<%= currentPage === 'Home' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-4 rounded-xl transition-all duration-300 font-medium">Homes</a>
+          class="<%= currentPage === 'Home' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 font-medium">Homes</a>
       </li>
       <li>
         <a href="/favourites"
-          class="<%= currentPage === 'favourites' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-4 rounded-xl transition-all duration-300 font-medium">Favourites</a>
+          class="<%= currentPage === 'favourites' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 font-medium">Favourites</a>
       </li>
       <li>
         <a href="/bookings"
-          class="<%= currentPage === 'bookings' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-4 rounded-xl transition-all duration-300 font-medium">Bookings</a>
+          class="<%= currentPage === 'bookings' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 font-medium">Bookings</a>
       </li>
       <% } else { %>
       <li>
         <a href="/host/host-home-list"
-          class="<%= currentPage === 'host-homes' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-4 rounded-xl transition-all duration-300 font-medium">Host
+          class="<%= currentPage === 'host-homes' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 font-medium">Host
           Homes</a>
       </li>
       <li>
         <a href="/host/add-home"
-          class="<%= currentPage === 'addHome' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-4 rounded-xl transition-all duration-300 font-medium">Add
+          class="<%= currentPage === 'addHome' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 font-medium">Add
           Home</a>
       </li>
       <% } %>
@@ -55,15 +57,15 @@
     <div class="flex items-center space-x-3">
       <% if (!isLoggedIn) { %>
       <a href="/signup"
-        class="hover:bg-white/20 text-white py-2 px-5 rounded-xl transition-all duration-300 font-medium">Signup</a>
+        class="hover:bg-white/20 text-white py-2 px-3 sm:px-5 rounded-xl transition-all duration-300 font-medium">Signup</a>
       <a href="/login"
-        class="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 text-white py-2 px-5 rounded-xl transition-all duration-300 font-semibold transform hover:scale-105 shadow-lg">
+        class="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 text-white py-2 px-3 sm:px-5 rounded-xl transition-all duration-300 font-semibold transform hover:scale-105 shadow-lg">
         Login
       </a>
       <% } else { %>
       <form action="/logout" method="POST">
         <button type="submit"
-          class="bg-white/10 hover:bg-white/20 text-white py-2 px-5 rounded-xl transition-all duration-300 font-medium border border-white/20">
+          class="bg-white/10 hover:bg-white/20 text-white py-2 px-3 sm:px-5 rounded-xl transition-all duration-300 font-medium border border-white/20">
           Logout
         </button>
       </form>

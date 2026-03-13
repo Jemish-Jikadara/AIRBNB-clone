@@ -17,20 +17,23 @@
   </head>
   <body class="animate-gradient min-h-screen">
     <%- include('../partials/nav') %>
-    <main class="container mx-auto p-8 mt-10 max-w-6xl">
+    <main class="container mx-auto p-4 sm:p-6 md:p-8 mt-10 max-w-6xl">
       <div class="glass-card bg-white/10 rounded-2xl shadow-2xl p-8">
         <div class="text-center mb-8">
           <div
-            class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
+            class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/20 mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white"
               fill="none" viewBox="0 0 24 24" stroke="currentColor"
               stroke-width="2"><path stroke-linecap="round"
                 stroke-linejoin="round"
                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
           </div>
-          <h2 class="text-3xl font-bold text-white mb-2">Here are our registered
+          <h2
+            class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">Here
+            are our registered
             homes:</h2>
-          <p class="text-white/70 text-sm">Browse and find your perfect stay</p>
+          <p class="text-white/70 text-xs sm:text-sm">Browse and find your
+            perfect stay</p>
         </div>
         <% if (registeredHomes && registeredHomes.length > 0) { %>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -52,9 +55,11 @@
               </div>
             </div>
             <div class="p-5">
-              <h3 class="text-xl font-semibold text-white mb-2 truncate"><%=
+              <h3
+                class="text-lg sm:text-xl font-semibold text-white mb-2 truncate"><%=
                 home.houseName %></h3>
-              <p class="text-white/70 mb-4 flex items-center">
+              <p
+                class="text-white/70 mb-4 flex items-center text-xs sm:text-sm">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   class="w-4 h-4 mr-1 text-pink-400" fill="none"
                   viewBox="0 0 24 24" stroke="currentColor"
@@ -67,13 +72,13 @@
               </p>
               <div class="flex justify-between items-center mb-4">
                 <span
-                  class="text-2xl font-bold bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent">Rs
+                  class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent">Rs
                   <%= home.price %></span>
                 <span class="text-white/60 text-sm">/ night</span>
               </div>
               <div class="flex gap-2">
                 <a href="/homes/<%= home._id %>"
-                  class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white py-2 px-4 rounded-xl text-center font-medium transition-all duration-300 transform hover:scale-105">Details</a>
+                  class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white py-2 px-3 sm:px-4 rounded-xl text-center font-medium transition-all duration-300 transform hover:scale-105">Details</a>
                 <%- include('../partials/favourite', {home: home}) %>
               </div>
             </div>
