@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <style>
+            body { font-family: 'Poppins', sans-serif; }
+            .glass-card {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            .animate-gradient {
+                background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+                background-size: 400% 400%;
+                animation: gradient 15s ease infinite;
+            }
+            @keyframes gradient {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+        </style>
+    </head>
+
+    <body class="animate-gradient min-h-screen">
+
+        <%- include('../partials/nav') %>
+
+        <div class="flex items-center justify-center min-h-screen px-4 py-8">
+            <div
+                class="glass-card bg-white/10 p-8 rounded-2xl shadow-2xl w-full max-w-md">
+
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-2">Welcome
+                        Back</h2>
+                    <p class="text-white/70 text-sm">Login to continue your
+                        journey</p>
+                </div>
+
+                <form action="/login" method="POST" class="space-y-5">
+                    <!-- Email -->
+                    <%- include('../partials/errors') %>
+                    <div class="relative">
+                        <label
+                            class="text-xs font-medium text-white/80 ml-1 mb-1 block">Email
+                            Address</label>
+                        <div class="relative">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-pink-400"
+                                fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <input
+                                type="email"
+                                name="email"
+                                value="<%= oldInput.email? oldInput.email : '' %>"
+                                placeholder="Enter your email"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-300 placeholder-white/40 text-white"
+                                required>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="relative">
+                        <label
+                            class="text-xs font-medium text-white/80 ml-1 mb-1 block">Password</label>
+                        <div class="relative">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-pink-400"
+                                fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-300 placeholder-white/40 text-white"
+                                required>
+                        </div>
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between text-sm">
+                        <label
+                            class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox"
+                                class="w-4 h-4 rounded border-white/30 bg-white/10 text-pink-500 focus:ring-pink-400 focus:ring-offset-0 cursor-pointer">
+                            <span class="text-white/70">Remember me</span>
+                        </label>
+                        <a href="#"
+                            class="text-pink-400 hover:text-pink-300">Forgot
+                            password?</a>
+                    </div>
+
+                    <!-- Button -->
+                    <button
+                        type="submit"
+                        class="w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 transition-all duration-300 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        Login
+                    </button>
+
+                    <!-- Register Link -->
+                    <p class="text-center text-white/70 text-sm">
+                        Don't have an account?
+                        <a href="/signup"
+                            class="text-pink-400 hover:text-pink-300 font-medium">Create
+                            one</a>
+                    </p>
+                </form>
+
+            </div>
+        </div>
+
+    </body>
+</html>
