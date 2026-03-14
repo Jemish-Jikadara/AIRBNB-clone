@@ -88,7 +88,9 @@ exports.postEditHome = (req, res, next) => {
     home.save().then(() => {
     res.redirect("/host/host-home-list");
     });
-});
+}).catch((error) => {
+    console.log("Error while updating ", error);
+  });
 };
 
 exports.postDeleteHome = (req, res, next) => {
