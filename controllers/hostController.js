@@ -10,28 +10,6 @@ exports.getAddHome = (req, res, next) => {
   });
 };
 
-exports.getEditHome = (req, res, next) => {
-  const homeId = req.params.homeId;
-  const editing = req.query.editing === "true";
-
-  Home.findById(homeId).then((home) => {
-    if (!home) {
-      console.log("Home not found for editing.");
-      return res.redirect("/host/host-home-list");
-    }
-
-    console.log(homeId, editing, home);
-    res.render("host/edit-home", {
-      home: home,
-      pageTitle: "Edit your Home",
-      currentPage: "host-homes",
-      editing: editing,
-      isLoggedIn: req.isLoggedIn,
-      user: req.session.user
-    });
-  });
-};
-
 exports.getHostHomes = (req, res, next) => {
   Home.find().then((registeredHomes) => {
     res.render("host/host-home-list", {
@@ -44,6 +22,28 @@ exports.getHostHomes = (req, res, next) => {
   });
 };
 
+exports.getEditHome = (req, res, next) => {
+  const homeId = req.params.homeId;
+  const editing = req.query.editing === "true";
+
+  Home.findById(homeId).then((home) => {
+    if (!home) {
+      console.log("Home not found for editing.");
+      return res.redirect("/host/host-home-list");
+    }
+    res.render("host/edit-home", {
+      home: home,
+      pageTitle: "Edit your Home",
+      currentPage: "host-homes",
+      editing: editing,
+      isLoggedIn: req.isLoggedIn,
+      user: req.session.user
+    });
+  });
+};
+
+
+
 exports.postAddHome = (req, res, next) => {
   const { houseName, price, location, rating, description } =
     req.body;
@@ -54,8 +54,9 @@ exports.postAddHome = (req, res, next) => {
       return res.status(400).send("No file uploaded.");
     }
 
-     const photo = req.file.path; // Get the path of the uploaded file
-     console.log("Photo saved at ", photo);
+     const photo = req.file.path; // cludinary returns the URL in the path property
+     
+      console.log(photo);
   const home = new Home({
     houseName,
     price,
@@ -66,9 +67,9 @@ exports.postAddHome = (req, res, next) => {
   });
   home.save().then(() => {
     console.log("Home Saved successfully");
+    res.redirect("/host/host-home-list");
   });
 
-  res.redirect("/host/host-home-list");
 };
 
 exports.postEditHome = (req, res, next) => {
@@ -82,23 +83,12 @@ exports.postEditHome = (req, res, next) => {
     home.description = description;
 
       if (req.file) {
-           fs.unlink(home.photo, (err) => {
-            if(err){
-              console.log("file delete error")
-            }
-           }
-            );
         home.photo = req.file.path;
       }
-    home.save().then((result) => {
-      console.log("Home updated ", result);
-    }).catch(err => {
-      console.log("Error while updating ", err);
-    })
+    home.save().then(() => {
     res.redirect("/host/host-home-list");
-  }).catch(err => {
-    console.log("Error while finding home ", err);
-  });
+    });
+});
 };
 
 exports.postDeleteHome = (req, res, next) => {
