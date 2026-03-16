@@ -200,10 +200,7 @@ exports.verifyEmail = async (req, res, next) => {
   }
     ;
   if (user.verificationCode !== code) {
-    return res.render("auth/verify-email", {
-      email,
-      error: true,
-    });
+    return res.status(400).send("enter a valid code");
   }
   user.isVerified = true;
   user.verificationCode = undefined;
