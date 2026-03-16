@@ -2,6 +2,7 @@ const { check, validationResult } = require("express-validator");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const transporter = require("../utils/email");
+const sendVerificationEmail = require("../utils/email");
 const crypto = require("crypto");
 
 exports.getlogin = (req, res, next) => {
@@ -168,17 +169,7 @@ exports.postsignup = [
       })
       .then(async(user) => {
         const verificationLink = `http://localhost:3000/verify-email?token=${user.verificationCode}&email=${user.email}`;
-        await transporter.sendMail({
-          to: user.email,
-          from: process.env.EMAIL_USER,
-          subject: "Email Verification",
-          html: `<h2> verify your email</h2>
-          <p>Your verificaition code is :</p>
-          <h3>${token}</h3>
-          <p>or click the link below to verify your email:</p>
-          <a href="${verificationLink}">Verify Email</a>`,
-        
-      });
+        await sendVerificationEmail(user.email, user.verificationCode);
         res.render("auth/verify-email", {
           email: user.email,
           pageTitle: "Email Verification"
@@ -246,14 +237,7 @@ exports.resendOtp = async (req, res, next) => {
   user.verificationCodeExpires = Date.now() + 30*1000; // 30 seconds expiration
 
   await user.save();
-  await transporter.sendMail({
-    to: user.email,
-    from: process.env.EMAIL_USER, 
-    subject: "Resend OTP - Email Verification",
-    html: `<h2>Resend OTP for Email Verification</h2>
-           <p>Your new verification code is:</p>
-            <h3>${newCode}</h3>`
-  });
+   await sendVerificationEmail(user.email, newCode);
   res.json({ message: "New OTP sent to your email" });
 }
 
