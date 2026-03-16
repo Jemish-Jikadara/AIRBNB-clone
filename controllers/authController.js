@@ -1,6 +1,8 @@
 const { check, validationResult } = require("express-validator");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const transporter = require("../utils/email");
+const crypto = require("crypto");
 
 exports.getlogin = (req, res, next) => {
   res.render("auth/login", {
@@ -30,12 +32,23 @@ exports.postlogin = async(req, res, next) => {
   }
   const doMatch = await bcrypt.compare(password, user.password);
 
+
   if (!doMatch) {
     return res.status(401).render("auth/login", {
       pageTitle: "login",
       currentPage: "login",
       isLoggedIn: false,
       errors: ["Invalid password...."],
+      oldInput: { email, password },
+      user: {},
+    });
+  }
+  if (!user.isVerified) {
+    return res.status(401).render("auth/login", {
+      pageTitle: "login",
+      currentPage: "login",
+      isLoggedIn: false,
+      errors: ["Please verify your email before logging in."],
       oldInput: { email, password },
       user: {},
     });
@@ -84,9 +97,8 @@ exports.postsignup = [
 
   check("email")
   .isEmail()
-  .withMessage("Please enter a valid email address")
-  .normalizeEmail(),
-
+  .withMessage("Please enter a valid email address"),
+  
   check("password")
   .isLength({min: 8})
   .withMessage("Password should be atleast 8 characters long")
@@ -140,6 +152,8 @@ exports.postsignup = [
       });
     }
 
+
+   const token = Math.floor(100000 + Math.random() * 900000).toString();
  bcrypt.hash(password, 12)
       .then((hashedPassword) => {
         const user = new User({
@@ -147,12 +161,28 @@ exports.postsignup = [
           lastName,
           email,
           password: hashedPassword,
-          userType
+          userType,
+          verificationCode: token,
         });
         return user.save();
       })
-      .then(() => {
-        res.redirect("/login");
+      .then(async(user) => {
+        const verificationLink = `http://localhost:3000/verify-email?token=${user.verificationCode}&email=${user.email}`;
+        await transporter.sendMail({
+          to: user.email,
+          from: process.env.EMAIL_USER,
+          subject: "Email Verification",
+          html: `<h2> verify your email</h2>
+          <p>Your verificaition code is :</p>
+          <h3>${token}</h3>
+          <p>or click the link below to verify your email:</p>
+          <a href="${verificationLink}">Verify Email</a>`,
+        
+      });
+        res.render("auth/verify-email", {
+          email: user.email,
+          pageTitle: "Email Verification"
+        });
       })
       .catch((err) => {
         console.error("Error saving user:", err);
@@ -168,5 +198,63 @@ exports.postsignup = [
   }
 ];
   
+exports.verifyEmail = async (req, res, next) => {
+  const code = req.body.code || req.query.token;
+  const email = req.body.email || req.query.email;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+   return res.redirect("/signup");
+  }
+    ;
+  if (user.verificationCode !== code) {
+    return res.render("auth/verify-email", {
+      email,
+      error: true,
+    });
+  }
+  user.isVerified = true;
+  user.verificationCode = undefined;
+  user.verificationCodeExpires = undefined;
+  await user.save();
+  res.redirect("/login");
+}
+
+
+exports.getVerifyEmail = (req, res, next) => {
+  const { token, email } = req.query;
+  res.render("auth/verify-email", {
+    email,
+    token: token,
+    pageTitle: "Email Verification"
+  });
+} 
+
+exports.resendOtp = async (req, res, next) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).send("User not found");
+  }
+  if (user.isVerified) {
+    return res.status(400).send("Email is already verified");
+  }
+  const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+  user.verificationCode = newCode;
+  user.verificationCodeExpires = Date.now() + 30*1000; // 30 seconds expiration
+
+  await user.save();
+  await transporter.sendMail({
+    to: user.email,
+    from: process.env.EMAIL_USER, 
+    subject: "Resend OTP - Email Verification",
+    html: `<h2>Resend OTP for Email Verification</h2>
+           <p>Your new verification code is:</p>
+            <h3>${newCode}</h3>`
+  });
+  res.json({ message: "New OTP sent to your email" });
+}
 
 
