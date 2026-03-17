@@ -19,10 +19,7 @@
 
     <!-- Navigation Links -->
     <ul class="flex items-center space-x-2">
-      <li>
-        <a href="/"
-          class="<%= currentPage === 'index' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 font-medium">Home</a>
-      </li>
+
       <% if (isLoggedIn) { %>
 
       <% if (user && user.userType === 'guest') { %>
@@ -56,6 +53,12 @@
     <!-- Auth Buttons -->
     <div class="flex items-center space-x-3">
       <% if (!isLoggedIn) { %>
+      <ul>
+        <li>
+          <a href="/"
+            class="<%= currentPage === 'index' ? 'bg-gradient-to-r from-pink-500 to-red-500' : 'hover:bg-white/20' %> text-white py-2 px-3 sm:px-4 rounded-xl transition-all duration-300 font-medium">Home</a>
+        </li>
+      </ul>
       <a href="/signup"
         class="hover:bg-white/20 text-white py-2 px-3 sm:px-5 rounded-xl transition-all duration-300 font-medium">Signup</a>
       <a href="/login"

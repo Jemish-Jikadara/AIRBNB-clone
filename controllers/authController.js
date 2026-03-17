@@ -62,7 +62,7 @@ exports.postlogin = async(req, res, next) => {
     if (err) {
       console.error("Session save error:", err);
     }
-  res.redirect("/");
+  res.redirect("/homes");
   });
 
 }
