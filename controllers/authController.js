@@ -172,6 +172,7 @@ exports.postsignup = [
         await sendVerificationEmail(user.email, user.verificationCode);
         res.render("auth/verify-email", {
           email: user.email,
+          code: user.verificationCode,
           pageTitle: "Email Verification"
         });
       })
@@ -203,6 +204,7 @@ exports.verifyEmail = async (req, res, next) => {
     return res.status(400).send("enter a valid code");
   }
   user.isVerified = true;
+  user.isLoggedIn = true;
   user.verificationCode = undefined;
   user.verificationCodeExpires = undefined;
   await user.save();

@@ -30,7 +30,8 @@ animation: shake 0.3s;
       <h2 class="text-2xl font-bold mb-2">Verify Email</h2>
 
       <p class="text-gray-500 mb-6">
-        Enter the 6 digit code sent to your email
+        Enter the 6 digit code sent to your email <%= email %>
+        And the code is : <%= code %>
       </p>
 
       <form id="otpForm" action="/verify-email" method="POST">
