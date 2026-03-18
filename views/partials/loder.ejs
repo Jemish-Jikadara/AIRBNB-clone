@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>loder</title>
+        <style>
+    body { font-family: 'Poppins', sans-serif; }
+
+    /* 🔥 Skeleton Loader */
+    .skeleton {
+      height: 250px;
+      border-radius: 12px;
+      background: linear-gradient(
+        90deg,
+        #1f1f1f 25%,
+        #2a2a2a 50%,
+        #1f1f1f 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 3.0s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+  </style>
+    </head>
+    <body>
+
+        <div id="loader"
+            class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+        </div>
+        <script>
+// 🔥 LOADER
+window.addEventListener("load", function () {
+  setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("content").style.display = "flex";
+  }, 3000);
+});
+</script>
+    </body>
+</html>

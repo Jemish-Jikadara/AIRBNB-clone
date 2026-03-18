@@ -29,6 +29,13 @@
   </head>
 
   <body class="bg-black text-white">
+
+    <!-- 🔥 LOADER -->
+
+    <%- include('../partials/loder') %>
+    
+    <!-- 🔥 MAIN CONTENT -->
+    <div id="content" style="display:none;" class="flex flex-col min-h-screen">
     <%- include('../partials/nav') %>
 
     <main class="container mx-auto p-8 mt-10 max-w-6xl">
@@ -136,7 +143,9 @@
         <% } %>
       </div>
     </main>
-    
+
     <%- include('../partials/Footer') %>
+
+    </div>
   </body>
 </html>

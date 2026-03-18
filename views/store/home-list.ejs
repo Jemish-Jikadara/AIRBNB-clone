@@ -1,72 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Homes</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Homes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<body class="bg-black text-white">
+  </head>
 
-<%- include('../partials/nav') %>
+  <body class="bg-black text-white flex flex-col min-h-screen">
 
-<main class="container mx-auto p-6">
+    <!-- 🔥 LOADER -->
 
-  <!-- 🔍 SEARCH BAR -->
-  <div class="relative mb-6">
-    <input 
-      type="text" 
-      id="searchInput" 
-      placeholder="Search location (e.g Surat)" 
-      class="w-full p-3 pl-10 rounded-lg text-black outline-none"
-    >
+    <%- include('../partials/loder') %>
 
-    <!-- ICON -->
-    <span class="absolute left-3 top-3 text-gray-500">🔍</span>
-  </div>
+    <!-- 🔥 MAIN CONTENT -->
+    <div id="content" style="display:none;" class="flex flex-col min-h-screen">
 
-  <% if (registeredHomes && registeredHomes.length > 0) { %>
+      <!-- ✅ NAVBAR -->
+      <%- include('../partials/nav') %>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- ✅ MAIN -->
+      <main class="container mx-auto p-6 flex-grow">
 
-    <% registeredHomes.forEach(home => { %>
+        <!-- 🔍 SEARCH -->
+        <div class="relative mb-6">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search location (e.g Surat)"
+            class="w-full p-3 pl-10 rounded-lg text-black outline-none">
+          <span class="absolute left-3 top-3 text-gray-500">🔍</span>
+        </div>
 
-    <!-- 🔥 IMPORTANT: data-location -->
-    <div class="card bg-gray-800 p-4 rounded-lg"
-         data-location="<%= home.location %>">
+        <% if (registeredHomes && registeredHomes.length > 0) { %>
 
-      <img src="<%= home.photo %>" class="w-full h-40 object-cover rounded">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-      <h3 class="text-lg font-bold mt-2"><%= home.houseName %></h3>
+          <% registeredHomes.forEach(home => { %>
 
-      <p>📍 <%= home.location %></p>
+          <div class="card bg-gray-800 p-4 rounded-lg"
+            data-location="<%= home.location %>">
 
-      <p class="text-yellow-400">₹ <%= home.price %></p>
+            <img src="<%= home.photo %>"
+              class="w-full h-40 object-cover rounded">
 
-      <div class="flex gap-2 mt-3">
-        <a href="/homes/<%= home._id %>" class="bg-blue-500 px-3 py-1 rounded">Details</a>
-        <%- include('../partials/favourite', {home: home}) %>
-      </div>
+            <h3 class="text-lg font-bold mt-2"><%= home.houseName %></h3>
+
+            <p>📍 <%= home.location %></p>
+
+            <p class="text-yellow-400">₹ <%= home.price %></p>
+
+            <div class="flex gap-2 mt-3">
+              <a href="/homes/<%= home._id %>"
+                class="bg-blue-500 px-3 py-1 rounded">
+                Details
+              </a>
+
+              <%- include('../partials/favourite', {home: home}) %>
+            </div>
+
+          </div>
+
+          <% }) %>
+
+        </div>
+
+        <% } else { %>
+
+        <p>No homes available</p>
+
+        <% } %>
+
+      </main>
+
+      <!-- ✅ FOOTER -->
+      <%- include('../partials/footer') %>
 
     </div>
 
-    <% }) %>
+    <!-- 🔥 SCRIPT -->
+    <script>
 
-  </div>
-
-  <% } else { %>
-
-    <p>No homes available</p>
-
-  <% } %>
-
-</main>
-
-    <%- include('../partials/Footer') %>
-
-<!-- 🔥 SEARCH SCRIPT -->
-<script>
+// 🔍 SEARCH
 const input = document.getElementById("searchInput");
 const cards = document.querySelectorAll(".card");
 
@@ -83,7 +99,10 @@ input.addEventListener("keyup", function() {
     }
   });
 });
+
+
+
 </script>
 
-</body>
+  </body>
 </html>
