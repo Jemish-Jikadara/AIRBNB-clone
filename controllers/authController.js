@@ -138,7 +138,7 @@ exports.postsignup = [
     return true;
   }),
 
-  // now ready to use a handler function
+  
   (req, res, next) => {
     const { firstName, lastName, email, password, userType } = req.body;
     const errors = validationResult(req);
