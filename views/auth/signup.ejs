@@ -25,6 +25,12 @@
                 50% { background-position: 100% 50%; }
                 100% { background-position: 0% 50%; }
             }
+            @keyframes spin{
+                to{transform : rotate(360deg);}
+            }
+            .custom-spin{
+                animation: spin 1s linear infinite;
+            }
         </style>
     </head>
 
@@ -246,9 +252,16 @@
 
                     <!-- Button -->
                     <button type="submit"
-                        class="w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 transition-all duration-300 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        class="w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 transition-all duration-300 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        id="signupBtn">
                         Create Account
                     </button>
+
+                    <p id="Processing"
+                        class="hidden  text-center text-blue-400 font-semibold text-lg flex items-center gap-2 justify-center mt-2">
+                        
+                        Processing......
+                    </p>
 
                     <!-- Login Link -->
                     <p class="text-center text-white/70 text-sm">
@@ -261,5 +274,14 @@
 
             </div>
         </div>
+        <script>
+            const form = document.querySelector("form")
+            const btn = document.getElementById("signupBtn");
+            const processing = document.getElementById("Processing")
+            form.addEventListener("submit",()=>{
+                btn.style.display="none";
+                processing.style.display = "block";
+            })
+        </script>
     </body>
 </html>

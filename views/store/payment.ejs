@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+
+  <div class="w-full max-w-md bg-gray-800 p-6 rounded-2xl shadow-xl">
+
+    <!-- Title -->
+    <h2 class="text-2xl font-bold text-center mb-6">
+      Complete Your Booking
+    </h2>
+
+    <!-- Home Info -->
+    <div class="mb-6">
+      <img src="<%= home.photo %>" class="w-full h-40 object-cover rounded-xl mb-4">
+
+      <h3 class="text-lg font-semibold"><%= home.houseName %></h3>
+      <p class="text-gray-400"><%= home.location %></p>
+
+      <div class="flex justify-between mt-3">
+        <span>Price</span>
+        <span class="font-bold text-green-400">₹ <%= home.price %></span>
+      </div>
+    </div>
+
+    <!-- Fake Payment Button -->
+    <button onclick="fakePayment()"
+      id="payBtn"
+      class="w-full bg-green-500 hover:bg-green-600 py-3 rounded-xl font-semibold transition">
+
+      Pay & Confirm Booking
+
+    </button>
+
+    <!-- Loader -->
+    <p id="processing"
+      class="hidden text-center text-blue-400 font-semibold mt-4 flex items-center justify-center gap-2">
+
+      <span class="w-5 h-5 border-4 border-blue-400 border-t-transparent rounded-full custom-spin"></span>
+      Processing...
+
+    </p>
+
+  </div>
+
+  <!-- Spinner CSS -->
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .custom-spin {
+      animation: spin 1s linear infinite;
+    }
+  </style>
+
+  <!-- JS -->
+  <script>
+    function fakePayment() {
+
+      const btn = document.getElementById("payBtn");
+      const loader = document.getElementById("processing");
+
+      btn.style.display = "none";
+      loader.classList.remove("hidden");
+
+      setTimeout(() => {
+
+        fetch("/confirm-booking", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            homeId: "<%= home._id %>"
+          })
+        })
+        .then(() => {
+          alert("Payment Successful ✅");
+          window.location = "/my-bookings";
+        });
+
+      }, 2000);
+
+    }
+  </script>
+
+</body>
+</html>

@@ -239,5 +239,3 @@ exports.resendOtp = async (req, res, next) => {
    await sendVerificationEmail(user.email, newCode);
   res.json({ message: "New OTP sent to your email" });
 }
-
-

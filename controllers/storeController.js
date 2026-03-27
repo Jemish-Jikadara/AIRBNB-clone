@@ -26,13 +26,28 @@ exports.getHomes = (req, res, next) => {
   });
 };
 
-exports.getBookings = (req, res, next) => {
-  res.render("store/bookings", {
-    pageTitle: "My Bookings",
-    currentPage: "bookings",
-    isLoggedIn: req.isLoggedIn,
-    user: req.session.user
-  });
+exports.getBookings = async(req, res, next) => {
+   try {
+    const home = await Home.findById(req.params.id);
+
+    console.log(home)
+
+    if (!home) {
+      return res.send("Home not found");
+    }
+
+    res.render("store/bookings", {
+      pageTitle: "Book Home",
+      currentPage: "booking",
+      isLoggedIn: req.isLoggedIn,
+      user: req.session.user,
+      home: home   // 🔥 ye important hai
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.send("Error loading booking page");
+  }
 };
 
 exports.getFavouriteList = async (req, res, next) => {
@@ -87,3 +102,12 @@ exports.getHomeDetails = (req, res, next) => {
     }
   });
 };
+
+
+exports.getpayment = async(req,res,next)=>{
+  const homeId= req.params.id;
+  const home = await Home.findById(homeId);
+  res.render("store/payment",{
+    home:home
+  })
+}

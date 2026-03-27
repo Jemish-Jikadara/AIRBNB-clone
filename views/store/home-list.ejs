@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Homes</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
   </head>
 
   <body class="bg-black text-white flex flex-col min-h-screen">
 
     <!-- 🔥 LOADER -->
-
     <%- include('../partials/loder') %>
 
     <!-- 🔥 MAIN CONTENT -->
@@ -51,13 +49,24 @@
 
             <p class="text-yellow-400">₹ <%= home.price %></p>
 
+            <!-- 🔥 BUTTONS -->
             <div class="flex gap-2 mt-3">
+              
+              <!-- Details -->
               <a href="/homes/<%= home._id %>"
                 class="bg-blue-500 px-3 py-1 rounded">
                 Details
               </a>
 
+              <!-- ✅ BOOK NOW -->
+              <a href="/bookings/<%= home._id %>"
+                class="bg-green-500 px-3 py-1 rounded">
+                Book Now
+              </a>
+
+              <!-- Favourite -->
               <%- include('../partials/favourite', {home: home}) %>
+
             </div>
 
           </div>
@@ -74,35 +83,43 @@
 
       </main>
 
-      <!-- ✅ FOOTER -->
       <%- include('../partials/Footer') %>
 
     </div>
 
     <!-- 🔥 SCRIPT -->
     <script>
+      // 🔍 SEARCH SAFE VERSION
+      const input = document.getElementById("searchInput");
+      const cards = document.querySelectorAll(".card");
 
-// 🔍 SEARCH
-const input = document.getElementById("searchInput");
-const cards = document.querySelectorAll(".card");
+      if (input) {
+        input.addEventListener("keyup", function() {
+          const value = input.value.toLowerCase();
 
-input.addEventListener("keyup", function() {
-  const value = input.value.toLowerCase();
+          cards.forEach(function(card) {
+            const location = card.getAttribute("data-location").toLowerCase();
 
-  cards.forEach(function(card) {
-    const location = card.getAttribute("data-location").toLowerCase();
+            if (location.includes(value)) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+      }
 
-    if (location.includes(value)) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
-  });
-});
+      // 🔥 LOADER CONTROL
+      window.addEventListener("load", function () {
+        setTimeout(() => {
+          const loader = document.getElementById("loader");
+          const content = document.getElementById("content");
 
-
-
-</script>
+          if (loader) loader.style.display = "none";
+          if (content) content.style.display = "flex";
+        }, 1000);
+      });
+    </script>
 
   </body>
 </html>

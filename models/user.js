@@ -15,7 +15,8 @@ const userSchema = mongoose.Schema({
   password: {type:String,require : true},
   userType: {type:String,require : true},
 
-  favourites: [{type:mongoose.Schema.Types.ObjectId, ref: 'Home'}]
+  favourites: [{type:mongoose.Schema.Types.ObjectId, ref: 'Home'}],
+  bookings:[{type:mongoose.Schema.Types.ObjectId, ref: 'Home'}]
 });
 
 module.exports = mongoose.model('User', userSchema)
