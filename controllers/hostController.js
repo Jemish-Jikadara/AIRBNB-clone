@@ -57,13 +57,20 @@ exports.postAddHome = (req, res, next) => {
     console.log("Received data ", req.body);
     console.log("Received file ", req.file);
 
+    const ratingNumber = Number(rating);
+
+    if (isNaN(ratingNumber)){
+      return res.status(400).send("invalid rating formet")
+    }
+    if(ratingNumber > 5 || ratingNumber < 0 ){
+      return res.status(400).send(" Rating must be between 0 and 5")
+    }
     if (!req.file) {
       return res.status(400).send("No file uploaded.");
     }
 
      const photo = req.file.path; // cludinary returns the URL in the path property
      
-      console.log(photo);
   const home = new Home({
     houseName,
     price,
