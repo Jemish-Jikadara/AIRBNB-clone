@@ -3,22 +3,22 @@ const Home = require("../models/home");
 const User = require("../models/user");
 const Booking = require("../models/Booking")
 
-
-
 exports.getIndex = (req, res, next) => {
 
   if (req.session.user) {
     return res.redirect("/homes");
   }
 
-  res.render("store/index", {
-    pageTitle: "airbnb Home",
-    currentPage: "index",
-    isLoggedIn: req.isLoggedIn,
-    user: req.session.user
+  Home.find().then((registeredHomes) => {
+    res.render("store/index", {
+      registeredHomes: registeredHomes, // 👈 add back
+      pageTitle: "airbnb Home",
+      currentPage: "index",
+      isLoggedIn: req.isLoggedIn,
+      user: req.session.user
+    });
   });
 };
-
 
 exports.getHomes = (req, res, next) => {
   Home.find().then((registeredHomes) => {
