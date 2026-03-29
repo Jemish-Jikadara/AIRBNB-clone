@@ -51,18 +51,18 @@
 
             <!-- 🔥 BUTTONS -->
             <div class="flex gap-2 mt-3">
-              
+
               <!-- Details -->
               <a href="/homes/<%= home._id %>"
                 class="bg-blue-500 px-3 py-1 rounded">
                 Details
               </a>
-
-              <!-- ✅ BOOK NOW -->
-              <a href="/bookings/<%= home._id %>"
-                class="bg-green-500 px-3 py-1 rounded">
-                Book Now
-              </a>
+              <form action="/bookings" method="POST">
+                <input type="hidden" name="homeId" value="<%= home._id %>">
+                <button class="bg-green-500 px-3 py-1 rounded">
+                  Book Now
+                </button>
+              </form>
 
               <!-- Favourite -->
               <%- include('../partials/favourite', {home: home}) %>

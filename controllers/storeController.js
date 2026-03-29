@@ -1,18 +1,24 @@
  
 const Home = require("../models/home");
 const User = require("../models/user");
+const Booking = require("../models/Booking")
+
+
 
 exports.getIndex = (req, res, next) => {
-  Home.find().then((registeredHomes) => {
-    res.render("store/index", {
-      registeredHomes: registeredHomes,
-      pageTitle: "airbnb Home",
-      currentPage: "index",
-      isLoggedIn: req.isLoggedIn,
-      user: req.session.user
-    });
+
+  if (req.session.user) {
+    return res.redirect("/homes");
+  }
+
+  res.render("store/index", {
+    pageTitle: "airbnb Home",
+    currentPage: "index",
+    isLoggedIn: req.isLoggedIn,
+    user: req.session.user
   });
 };
+
 
 exports.getHomes = (req, res, next) => {
   Home.find().then((registeredHomes) => {
@@ -25,6 +31,82 @@ exports.getHomes = (req, res, next) => {
     });
   });
 };
+
+// get all te booking of a user
+exports.getAllBookings = async (req, res) => {
+  try {
+    const userId = req.session.user._id;
+
+    const bookings = await Booking.find({ userId }).populate("homeId");
+
+    res.render("store/bookings-list", {
+      pageTitle: "My Bookings",
+      currentPage: "booking",
+      bookings: bookings,
+      isLoggedIn: req.isLoggedIn,
+      user: req.session.user
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.send("Error loading bookings");
+  }
+};
+
+//handel a post request to add a home to booking
+exports.postAddToBooking = async (req, res) => {
+  try {
+    const homeId = req.body.homeId;
+    const userId = req.session.user._id;
+
+    const exist = await Booking.findOne({ homeId, userId });
+
+    if (exist) {
+      return res.redirect("/bookings");
+    }
+
+    await Booking.create({ homeId, userId });
+
+    res.redirect("/bookings");
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+exports.postRemoveFromBooking = async (req, res) => {
+  try {
+    const homeId = req.params.homeId;
+    const userId = req.session.user._id;
+
+    await Booking.deleteOne({ homeId, userId });
+
+    res.redirect("/bookings");
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+exports.postConfirmBooking = async (req, res) => {
+  try {
+    const homeId = req.params.homeId;
+    const userId = req.session.user._id;
+
+    // status update
+    await Booking.updateOne(
+      { homeId, userId },
+      { status: "confirmed" }
+    );
+
+    // 👉 PAYMENT PAGE redirect
+    res.redirect("/payment/" + homeId);
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
 exports.getBookings = async(req, res, next) => {
    try {
@@ -41,7 +123,7 @@ exports.getBookings = async(req, res, next) => {
       currentPage: "booking",
       isLoggedIn: req.isLoggedIn,
       user: req.session.user,
-      home: home   // 🔥 ye important hai
+      home: home   
     });
 
   } catch (err) {
